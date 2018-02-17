@@ -6,12 +6,13 @@
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #include <iostream>
 #include <sstream>
 
 #define BUFFER_SIZE 20
-#define DEST_PORT 4000
+#define DEST_PORT 4001
 using namespace std;
 
 /*struct sockaddr_in
@@ -24,7 +25,7 @@ using namespace std;
 
 int main()
 {
-    std::cerr << "web server is not implemented yet" << std::endl;
+    //std::cerr << "web server is not implemented yet" << std::endl;
     // do your stuff here! or not if you don't want to.
     int listen_socket, client_socket;
     struct sockaddr_in source_address;
@@ -39,10 +40,12 @@ int main()
     dest_address.sin_port = htons(DEST_PORT);
     
     //IP adress, change to automatically get it
-    dest_address.sin_addr.s_addr = inet_addr("0.0.0.0");
+    dest_address.sin_addr.s_addr = inet_addr("127.0.0.1");
     
     //create a socket
     listen_socket = socket(AF_INET, SOCK_STREAM, 0);
+    
+    
     
     //error check -- this migt not be right
     /*if(listen_socket != 0){
@@ -58,11 +61,21 @@ int main()
         error = 2;
         return error;
     };*/
+    
+    int listenCheck = listen(listen_socket, 1);
+    
+    if(listenCheck != -1){
+        cout << "Listening on port " << DEST_PORT << "\n";
+    }
+    
        //source addressis is  client address
        //accept connection
        while(1){//until end
+           
+           
            socklen_t client_size = sizeof(source_address);
-           client_socket = accept(listen_socket, (struct sockaddr*)&client_socket, &client_size);
+           
+           client_socket = accept(listen_socket, (struct sockaddr*)&source_address, &client_size);
            //error checking
            if (client_socket == -1) {
                perror("accept");
@@ -89,13 +102,16 @@ int main()
                    return error;
                }
                
+               cout << buffer << "\n";
+               
                if(send(client_socket, buffer, BUFFER_SIZE, 0) == -1){
                    perror("send");
                    error = 6;
                    return error;
                }
-               close(client_socket);
+               
            }
+           close(client_socket);
            
            
            //int port = 4000;
