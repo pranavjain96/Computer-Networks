@@ -115,17 +115,34 @@ int main()
                response.decodeURL();
                
                const char *directory = response.directory.c_str();
-               FILE * File = fopen(directory, "r");
+               ifstream file;
+               file.open(directory);
                
-               if(File == NULL){
+               
+               
+               if(!file){
                    cout << "File does not exsist 🙃\n";
                    response.newerrorCode("404 File Not Found ");
                    
                    
                }else{
+                   string fileLine;
+                   string fileContents;
+                   while(!file.eof()){
+                       getline(file,fileLine);
+                       //cout << fileLine << "\n";
+                       fileContents= fileContents + fileLine + "\n";
+                   }
+                   file.close();
+                    response.newhtmlBody(fileContents);
+                   //response.newhtmlBody(file)
+                   //cout << "Contents:" << fileContents << endl;
+                   
                    cout << "File does exsist\n";
                    response.newerrorCode("200 OK ");
+                   
                }
+               
                response.newMessage();
                const char *responseMessage = response.message_response.c_str();
                if(send(client_socket, responseMessage , strlen(responseMessage), 0) == -1){
@@ -160,4 +177,4 @@ int main()
            
            
        }
-       }
+}
