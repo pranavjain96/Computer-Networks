@@ -7,11 +7,15 @@
 #include <errno.h>
 #include <unistd.h>
 #include <pthread.h>
+#include "response.h"
+#include "response.cpp"
+
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
-#define BUFFER_SIZE 20
+#define BUFFER_SIZE 60
 #define DEST_PORT 4001
 using namespace std;
 
@@ -89,12 +93,15 @@ int main()
            cout <<" Connection being accepted from " << ip_string << ":"  << ntohs(source_address.sin_port) << "\n";
            
            //read/write
+           ResponseHTTP response;
+           
            bool end = false;
            char buffer[BUFFER_SIZE] = {0};
            //string stringstream;
            
            while(!end){
                memset(buffer, '\0', sizeof(buffer));
+               
                
                if(recv(client_socket, buffer, BUFFER_SIZE, 0) == -1){
                    perror("recv");
@@ -103,8 +110,25 @@ int main()
                }
                
                cout << buffer << "\n";
+               response.requestMessage(string(buffer));
+               response.decodeMessage();
+               response.decodeURL();
                
-               if(send(client_socket, buffer, BUFFER_SIZE, 0) == -1){
+               const char *directory = response.directory.c_str();
+               FILE * File = fopen(directory, "r");
+               
+               if(File == NULL){
+                   cout << "File does not exsist 🙃\n";
+                   response.newerrorCode("404 File Not Found ");
+                   
+                   
+               }else{
+                   cout << "File does exsist\n";
+                   response.newerrorCode("200 OK ");
+               }
+               response.newMessage();
+               const char *responseMessage = response.message_response.c_str();
+               if(send(client_socket, responseMessage , strlen(responseMessage), 0) == -1){
                    perror("send");
                    error = 6;
                    return error;
