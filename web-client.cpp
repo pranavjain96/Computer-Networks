@@ -14,7 +14,7 @@
 #include "request.cpp"
 using namespace std;
 
-#define TM_BUF_SIZE 60
+#define TM_BUF_SIZE 3000
 //#define TM_PACKETS_TO_SEND 10
 //#define TM_DEST_ADDR “10.129.36.52”
 #define TM_DEST_PORT 4001
@@ -91,12 +91,32 @@ int main()
             return 4;
         }
         
+        
         long recvCheck = recv(clientSocket, buffer, TM_BUF_SIZE, 0);
         if(recvCheck == -1 ){
             perror("receive");
             return 5;
         }
         cout << "Received " << buffer << "\n";
+        int i = 0;//where in response string
+        int j =0;//where in substring buffer
+        char buf_response[TM_BUF_SIZE];
+        while(buffer[i] != ' ' && j< TM_BUF_SIZE){
+            buf_response[j] = buffer[i];
+            i++;
+            j++;
+        }
+        memset(buf_response, '\0', TM_BUF_SIZE);
+        j = 0;
+        i++;
+        while(buffer[i] != '\r' && j<TM_BUF_SIZE){
+            buf_response[j] = buffer[i];
+            i++;
+            j++;
+        }
+        string responseCode = string(buf_response);
+        cout << responseCode << endl;
+        //cout << request.htmlBody
         
     }//end while end
         
