@@ -9,18 +9,23 @@
 
 #include <iostream>
 #include <sstream>
+#include "response.h"
+#include "request.h"
+#include "request.cpp"
 using namespace std;
 
-#define TM_BUF_SIZE 20
+#define TM_BUF_SIZE 60
 //#define TM_PACKETS_TO_SEND 10
 //#define TM_DEST_ADDR “10.129.36.52”
 #define TM_DEST_PORT 4001
+#define BUFFER_SIZE
+
 
 int main()
 {
     std::cerr << "web client is not implemented yet" << std::endl;
     // do your stuff here! or not if you don't want to.
-    
+    //char buffer[TM_BUF_SIZE];
     int clientSocket;
     struct sockaddr_in destination_address;
     int error;
@@ -66,6 +71,8 @@ int main()
     //seend/receive data
     bool end = false;
     string input;
+    Request_HTTP request;
+    
     
     while(1){
         
@@ -74,8 +81,10 @@ int main()
         memset(buffer, '\0', sizeof(buffer));
         
         cout << "send ";
-        cin >> input;
-        long sendCheck = send(clientSocket, input.c_str(), input.size(), 0);
+        cin >> request.url_request;
+        request.newMessage();
+        
+        long sendCheck = send(clientSocket, request.message_request.c_str(), request.message_request.size(), 0);
         
         if(sendCheck < 0){
             perror("send");
