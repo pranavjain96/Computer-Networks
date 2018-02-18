@@ -1,3 +1,11 @@
+//
+//  web-server.cpp
+//  Networks
+//
+//  Created by Sophie Hegarty on 8/2/2018.
+//  Copyright © 2017 Sophie Hegarty. All rights reserved.
+//
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -16,7 +24,7 @@
 #include <sstream>
 
 #define BUFFER_SIZE 60
-#define DEST_PORT 4000
+//#define DEST_PORT 4000
 using namespace std;
 
 /*struct sockaddr_in
@@ -27,8 +35,20 @@ using namespace std;
  char           sin_zero[8];
  };*/
 
-int main()
+/* struct data{
+ add everything in here for the threading 
+ }
+ */
+
+int main(int argc, char *argv[])
 {
+    if ( argc != 4){
+        cout << "usage: " << argc[0] << "<host> <port> <directory>\n";
+    }else{
+        char host[BUFFER_SIZE] = argc[1];
+        int DEST_PORT = argc[2];
+        char dir[BUFFER_SIZE] = argc[3];
+    }
     //std::cerr << "web server is not implemented yet" << std::endl;
     // do your stuff here! or not if you don't want to.
     int listen_socket, client_socket;
