@@ -21,9 +21,14 @@ using namespace std;
 #define BUFFER_SIZE 5000
 
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::cerr << "web client is not implemented yet" << std::endl;
+    if ( argc != 2){
+        cout << "usage: " << argc[0] << "<url> \n";
+    }else{
+        char url[BUFFER_SIZE] = argc[1];
+    }
+    //std::cerr << "web client is not implemented yet" << std::endl;
     // do your stuff here! or not if you don't want to.
     //char buffer[TM_BUF_SIZE];
     int clientSocket;
@@ -82,6 +87,7 @@ int main()
         
         cout << "send ";
         cin >> request.url_request;
+        //request.url = "http://" + directory + ":" + port +"/" + url;
         request.newMessage();
         
         long sendCheck = send(clientSocket, request.message_request.c_str(), request.message_request.size(), 0);
