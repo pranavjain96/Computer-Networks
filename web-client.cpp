@@ -14,11 +14,11 @@
 #include "request.cpp"
 using namespace std;
 
-#define TM_BUF_SIZE 3000
+#define TM_BUF_SIZE 6000
 //#define TM_PACKETS_TO_SEND 10
 //#define TM_DEST_ADDR “10.129.36.52”
-#define TM_DEST_PORT 4001
-#define BUFFER_SIZE
+#define TM_DEST_PORT 4000
+#define BUFFER_SIZE 5000
 
 
 int main()
