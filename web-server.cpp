@@ -16,7 +16,7 @@
 #include <sstream>
 
 #define BUFFER_SIZE 60
-#define DEST_PORT 4001
+#define DEST_PORT 4000
 using namespace std;
 
 /*struct sockaddr_in
@@ -132,7 +132,9 @@ int main()
                        getline(file,fileLine);
                        //cout << fileLine << "\n";
                        fileContents= fileContents + fileLine + "\n";
+                       
                    }
+                   cout << "Size of file is: " << fileContents.length() << endl;
                    file.close();
                     response.newhtmlBody(fileContents);
                    //response.newhtmlBody(file)
@@ -150,6 +152,7 @@ int main()
                    error = 6;
                    return error;
                }
+               //memset(responseMessage, '\0', sizeof(responseMessage);
                
            }
            close(client_socket);
