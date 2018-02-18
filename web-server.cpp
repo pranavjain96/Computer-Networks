@@ -49,6 +49,10 @@ int main(int argc, char *argv[])
         int DEST_PORT = argc[2];
         char dir[BUFFER_SIZE] = argc[3];
     }
+    /*NEED TO APPLY ARGUMENTS TO THE SERVER, EG HOW TO ADD HOST TO THE MESSAGE?
+     HOW TO ADD PORT TO CLIENT ALSO? IS NECESSARY? 
+     HOW TO ADD DIRECTORY TO THE URL THING
+     */
     //std::cerr << "web server is not implemented yet" << std::endl;
     // do your stuff here! or not if you don't want to.
     int listen_socket, client_socket;
